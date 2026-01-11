@@ -112,6 +112,46 @@ Untuk menjalankan *notebook* ini di lokal komputer Anda:
 
 ---
 
+## 🌐 Setup dan Deploy Aplikasi Streamlit
+
+Proyek ini juga menyediakan aplikasi web interaktif menggunakan **Streamlit** untuk memprediksi harga rumah berdasarkan model yang telah dilatih.
+
+### Menjalankan Aplikasi Secara Lokal
+
+1.  **Pastikan Dependencies Terinstall**
+    Install library yang diperlukan untuk aplikasi Streamlit:
+    ```bash
+    pip install streamlit joblib pandas
+    ```
+
+2.  **Jalankan Aplikasi**
+    ```bash
+    streamlit run app.py
+    ```
+    Aplikasi akan terbuka di browser pada `http://localhost:8501`.
+
+### Deploy ke Streamlit Cloud
+
+1.  **Persiapan Repository**
+    - Pastikan semua file model (`house_price_model.pkl`, `feature_columns.pkl`) dan `app.py` ada di repository GitHub Anda.
+    - Buat file `requirements.txt` dengan dependencies berikut:
+      ```
+      streamlit
+      joblib
+      pandas
+      scikit-learn
+      ```
+
+2.  **Deploy ke Streamlit Cloud**
+    - Kunjungi [Streamlit Cloud](https://share.streamlit.io/).
+    - Connect ke repository GitHub Anda.
+    - Pilih branch utama dan file `app.py` sebagai entry point.
+    - Klik **Deploy** dan tunggu proses selesai.
+
+> *Catatan: Pastikan model dan file pickle tidak terlalu besar untuk upload ke GitHub. Jika perlu, gunakan Git LFS untuk file besar.*
+
+---
+
 ## 👤 Author
 
 **Haykal Aul**
