@@ -1,35 +1,66 @@
-import joblit as jl
 import streamlit as st
-from utils.data_processing import process_data
-from utils.model_training import train_model
-from utils.visualization import plot_results
-from utils.evaluation import evaluate_model
-from utils.data_loading import load_data
+import joblib
+import pandas as pd
 
-@jl.app
-def main():
-    st.title("Data Science Application")
+model = joblib.load("house_price_model.pkl")
+columns = joblib.load("feature_columns.pkl")
 
-    # Load data
-    data = load_data("data/sample_data.csv")
-    st.write("Data Loaded Successfully")
+st.title("Predict House Price")
 
-    # Process data
-    processed_data = process_data(data)
-    st.write("Data Processed Successfully")
+inputs = {}
 
-    # Train model
-    model = train_model(processed_data)
-    st.write("Model Trained Successfully")
+inputs["GrLivArea"] = st.number_input("Luas Bangunan (sqft)", min_value=0)
+inputs["LotArea"] = st.number_input("Luas Tanah (sqft)", min_value=0)
+inputs["TotalBsmtSF"] = st.number_input("Luas Basement (sqft)", min_value=0)
 
-    # Evaluate model
-    evaluation_results = evaluate_model(model, processed_data)
-    st.write("Model Evaluation Results:", evaluation_results)
+inputs["BedroomAbvGr"] = st.number_input("Jumlah Kamar Tidur", min_value=0)
+inputs["FullBath"] = st.number_input("Jumlah Kamar Mandi", min_value=0)
+inputs["TotRmsAbvGrd"] = st.number_input("Total Ruangan", min_value=0)
 
-    # Plot results
-    plot_results(evaluation_results)
-    st.write("Results Plotted Successfully")
-    st.pyplot()
-if __name__ == "__main__":
-    main()
-    
+inputs["OverallQual"] = st.slider("Kualitas Rumah (1 = buruk, 10 = sangat baik)", 1, 10, 5)
+inputs["OverallCond"] = st.slider("Kondisi Rumah (1–10)", 1, 10, 5)
+
+inputs["KitchenQual"] = st.slider("Kualitas Dapur (1–5)", 1, 5, 3)
+
+inputs["GarageCars"] = st.number_input("Kapasitas Garasi (mobil)", min_value=0)
+inputs["GarageArea"] = st.number_input("Luas Garasi (sqft)", min_value=0)
+
+neighborhood_mapping = {
+    "Blmngtn": 0,
+    "Blueste": 1,
+    "BrDale": 2,
+    "BrkSide": 3,
+    "ClearCr": 4,
+    "CollgCr": 5,
+    "Crawfor": 6,
+    "Edwards": 7,
+    "Gilbert": 8,
+    "IDOTRR": 9,
+    "MeadowV": 10,
+    "Mitchel": 11,
+    "NAmes": 12,
+    "NPkVill": 13,
+    "NWAmes": 14,
+    "NoRidge": 15,
+    "NridgHt": 16,
+    "OldTown": 17,
+    "SWISU": 18,
+    "Sawyer": 19,
+    "SawyerW": 20,
+    "Somerst": 21,
+    "StoneBr": 22,
+    "Timber": 23,
+    "Veenker": 24
+}
+
+selected_location = st.selectbox(
+    "Lokasi / Neighborhood",
+    list(neighborhood_mapping.keys())
+)
+
+inputs["Neighborhood"] = neighborhood_mapping[selected_location]
+
+df = pd.DataFrame([inputs])
+prediction = model.predict(df)[0]
+
+st.success(f"💰 Prediksi Harga Rumah: {prediction:,.2f}")
