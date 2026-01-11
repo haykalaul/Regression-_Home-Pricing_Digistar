@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Harga Rumah - House Price Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="logo">
+                    <h1>🏠 House Price Predictor</h1>
+                </div>
+                <p class="tagline">Prediksi harga rumah dengan teknologi machine learning</p>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div class="content-wrapper">
+            <!-- Left Section - Form -->
+            <section class="form-section">
+                <div class="section-header">
+                    <h2>📋 Detail Properti</h2>
+                    <p>Masukkan informasi rumah Anda untuk prediksi</p>
+                </div>
+
+                <form id="predictionForm" class="prediction-form">
+                    <!-- Section 1: Luas Bangunan -->
+                    <fieldset class="form-fieldset">
+                        <legend>Luas Bangunan</legend>
+                        <div class="form-group">
+                            <label for="GrLivArea">
+                                <span class="label-text">Luas Bangunan Utama (sqft)</span>
+                                <span class="unit-info">Area Hidup Bruto</span>
+                            </label>
+                            <input type="number" id="GrLivArea" name="GrLivArea" min="0" step="100" placeholder="Contoh: 2000" required>
+                            <div class="input-hint">Luas area yang dapat dihuni</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="LotArea">
+                                <span class="label-text">Luas Tanah (sqft)</span>
+                                <span class="unit-info">Lot Area</span>
+                            </label>
+                            <input type="number" id="LotArea" name="LotArea" min="0" step="100" placeholder="Contoh: 5000" required>
+                            <div class="input-hint">Total area tanah/kavling</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="TotalBsmtSF">
+                                <span class="label-text">Luas Basement (sqft)</span>
+                                <span class="unit-info">Total Basement Area</span>
+                            </label>
+                            <input type="number" id="TotalBsmtSF" name="TotalBsmtSF" min="0" step="100" placeholder="Contoh: 1000" required>
+                            <div class="input-hint">Area basement jika ada</div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Section 2: Ruangan & Kamar -->
+                    <fieldset class="form-fieldset">
+                        <legend>Ruangan & Kamar</legend>
+                        <div class="form-group-row">
+                            <div class="form-group">
+                                <label for="BedroomAbvGr">
+                                    <span class="label-text">Kamar Tidur</span>
+                                </label>
+                                <input type="number" id="BedroomAbvGr" name="BedroomAbvGr" min="0" step="1" placeholder="Jumlah" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="FullBath">
+                                    <span class="label-text">Kamar Mandi</span>
+                                </label>
+                                <input type="number" id="FullBath" name="FullBath" min="0" step="1" placeholder="Jumlah" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="TotRmsAbvGrd">
+                                    <span class="label-text">Total Ruangan</span>
+                                </label>
+                                <input type="number" id="TotRmsAbvGrd" name="TotRmsAbvGrd" min="0" step="1" placeholder="Jumlah" required>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Section 3: Kualitas & Kondisi -->
+                    <fieldset class="form-fieldset">
+                        <legend>Kualitas & Kondisi</legend>
+                        <div class="form-group">
+                            <label for="OverallQual">
+                                <span class="label-text">Kualitas Rumah (1-10)</span>
+                                <span class="rating" id="qualRating">5 - Rata-rata</span>
+                            </label>
+                            <input type="range" id="OverallQual" name="OverallQual" min="1" max="10" value="5" class="range-slider">
+                            <div class="range-labels">
+                                <span>1 - Buruk</span>
+                                <span>10 - Sangat Baik</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="OverallCond">
+                                <span class="label-text">Kondisi Rumah (1-10)</span>
+                                <span class="rating" id="condRating">5 - Rata-rata</span>
+                            </label>
+                            <input type="range" id="OverallCond" name="OverallCond" min="1" max="10" value="5" class="range-slider">
+                            <div class="range-labels">
+                                <span>1 - Buruk</span>
+                                <span>10 - Sangat Baik</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="KitchenQual">
+                                <span class="label-text">Kualitas Dapur (1-5)</span>
+                                <span class="rating" id="kitchenRating">3 - Rata-rata</span>
+                            </label>
+                            <input type="range" id="KitchenQual" name="KitchenQual" min="1" max="5" value="3" class="range-slider">
+                            <div class="range-labels">
+                                <span>1 - Buruk</span>
+                                <span>5 - Sangat Baik</span>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Section 4: Garasi -->
+                    <fieldset class="form-fieldset">
+                        <legend>Garasi</legend>
+                        <div class="form-group-row">
+                            <div class="form-group">
+                                <label for="GarageCars">
+                                    <span class="label-text">Kapasitas Garasi</span>
+                                    <span class="unit-info">Jumlah Mobil</span>
+                                </label>
+                                <input type="number" id="GarageCars" name="GarageCars" min="0" step="1" placeholder="Jumlah" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="GarageArea">
+                                    <span class="label-text">Luas Garasi (sqft)</span>
+                                </label>
+                                <input type="number" id="GarageArea" name="GarageArea" min="0" step="100" placeholder="Contoh: 500" required>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Section 5: Lokasi -->
+                    <fieldset class="form-fieldset">
+                        <legend>Lokasi</legend>
+                        <div class="form-group">
+                            <label for="Neighborhood">
+                                <span class="label-text">Neighborhood / Lokasi</span>
+                            </label>
+                            <select id="Neighborhood" name="Neighborhood" required>
+                                <option value="">-- Pilih Lokasi --</option>
+                                {% for neighborhood in neighborhoods %}
+                                <option value="{{ neighborhood }}">{{ neighborhood }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="btn-icon">🔍</span>
+                            <span class="btn-text">Prediksi Harga</span>
+                        </button>
+                        <button type="reset" class="btn btn-secondary">
+                            <span class="btn-text">Reset Form</span>
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Right Section - Result -->
+            <section class="result-section">
+                <div class="result-card" id="resultCard" style="display: none;">
+                    <div class="result-header">
+                        <h3>💰 Hasil Prediksi</h3>
+                    </div>
+
+                    <div class="result-content">
+                        <div class="price-display">
+                            <div class="price-label">Estimasi Harga Rumah</div>
+                            <div class="price-value" id="predictedPrice">$0</div>
+                            <div class="price-subtext">Berdasarkan data yang diinputkan</div>
+                        </div>
+
+                        <div class="result-details">
+                            <h4>📊 Summary Data Input</h4>
+                            <table class="summary-table" id="summaryTable">
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="result-info">
+                            <p class="info-text">
+                                <strong>ℹ️ Catatan:</strong> Prediksi ini didasarkan pada model machine learning regression yang telah dilatih dengan data historis. Hasil prediksi adalah estimasi dan dapat berbeda dari harga pasar sebenarnya.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Menganalisis data...</p>
+                </div>
+
+                <div class="error-message" id="errorMessage" style="display: none;">
+                    <div class="error-icon">⚠️</div>
+                    <div class="error-content">
+                        <h4>Terjadi Kesalahan</h4>
+                        <p id="errorText"></p>
+                    </div>
+                </div>
+
+                <div class="empty-state">
+                    <div class="empty-icon">📝</div>
+                    <h4>Isi Form untuk Memulai</h4>
+                    <p>Masukkan detail properti Anda di sebelah kiri untuk mendapatkan prediksi harga</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 House Price Predictor. Powered by Machine Learning | Digistar</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
