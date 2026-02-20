@@ -4,7 +4,7 @@
 ![Library](https://img.shields.io/badge/Library-Scikit--Learn%20%7C%20Pandas%20%7C%20Seaborn-green)
 ![Status](https://img.shields.io/badge/Status-Completed-success)
 
-Repositori ini berisi solusi *end-to-end* untuk proyek sistem **Regression Case: Home Pricing**, yang merupakan bagian dari program pelatihan/bootcamp **Telkom Digistar**. Proyek ini bertujuan untuk membangun model Machine Learning yang mampu memprediksi harga rumah berdasarkan berbagai fitur properti((12 fitur).
+Repositori ini berisi solusi *end-to-end* untuk proyek **Regression Case: Home Pricing**, yang merupakan bagian dari program pelatihan/bootcamp **Telkom Digistar**. Proyek ini bertujuan untuk membangun model Machine Learning yang mampu memprediksi harga rumah berdasarkan berbagai fitur properti((12 fitur).
 
 ---
 
